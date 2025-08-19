@@ -1,0 +1,1145 @@
+/* ===== THEME TOKENS ===== */
+:root {
+  --bg: #0b1020;
+  --panel: #0f172a;
+  --card: #111827;
+  --text: #e6eefc;
+  --muted: #9aa4bc;
+  --border: #24324f;
+  --ring: #61c4ff;
+  --accent: #83e0a3;
+  --accent2: #61c4ff;
+  --danger: #ff6b6b;
+  --grid: rgba(255, 255, 255, 0.2);
+  --radius: 16px;
+  --shadow: 0 20px 60px rgba(10, 14, 28, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+[data-theme="light"]:root {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --card: #ffffff;
+  --text: #0b1020;
+  --muted: #334155;
+  --border: #e5e7eb;
+  --ring: #0284c7;
+  --accent: #16a34a;
+  --accent2: #0284c7;
+  --danger: #dc2626;
+  --grid: rgba(0, 0, 0, 0.2);
+  --shadow: 0 10px 24px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ===== BASE ===== */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: "Times New Roman", Times, serif;
+  background: radial-gradient(
+    1200px 900px at 10% 10%,
+    #0f172a 0%,
+    var(--bg) 55%,
+    #081225 100%
+  );
+  color: var(--text);
+  transition: background 0.25s ease, color 0.2s ease;
+}
+[data-theme="light"] body {
+  background: #ffffff;
+}
+
+.app {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+/* ===== BAR + BUTTONS ===== */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(97, 196, 255, 0.14),
+    rgba(131, 224, 163, 0.12)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    100% 100% at 30% 20%,
+    var(--accent2),
+    var(--accent)
+  );
+  color: #0b1020;
+  font-weight: 900;
+  box-shadow: var(--shadow);
+}
+.title {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+/* Giới hạn dropdown để giữ 1 hàng cho toàn bộ toolbar */
+#vaultSelect {
+  max-width: 220px; /* giới hạn cứng chiều rộng */
+  width: 100%; /* chiếm hết trong giới hạn */
+  /* ẩn phần dư */
+  /* thay bằng … */
+  white-space: nowrap; /* giữ trên 1 dòng */
+  flex-shrink: 0; /* không bị co khi thiếu chỗ */
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+/* Phòng trường hợp trình duyệt coi <select> như inline-flex của .btn */
+.controls > select.btn {
+  max-width: 100%;
+}
+
+/* Nút tiêu đề: nhìn như chữ, gõ trực tiếp */
+.title-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  outline: none;
+  border-radius: 8px;
+}
+/* Khóa placeholder vĩnh viễn khi đã xác nhận bằng Enter */
+.title-btn.ph-locked::after {
+  content: none;
+}
+
+.title-btn.editing {
+  box-shadow: 0 0 0 3px var(--ring);
+  background: rgba(97, 196, 255, 0.08);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 14px 0;
+}
+.button-group-center {
+  display: flex;
+  flex-wrap: wrap; /* tự xuống hàng nếu màn hình nhỏ */
+  margin-left: 4%;
+  gap: 10px; /* khoảng cách giữa các nút */
+}
+
+.btn {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.06s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn.primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #0b0f1a;
+  font-weight: 800;
+}
+.btn.danger {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.15),
+    rgba(255, 107, 107, 0.05)
+  );
+  border-color: rgba(255, 107, 107, 0.5);
+  color: #ffd2d2;
+}
+/* Hiệu ứng sáng khi hover/focus */
+.btn {
+  transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--ring) 60%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 35%, transparent),
+    0 10px 30px rgba(97, 196, 255, 0.15), var(--shadow);
+  filter: brightness(1.05);
+  outline: none;
+}
+
+/* Biến thể primary rực hơn */
+.btn.primary:hover,
+.btn.primary:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent2) 35%, transparent),
+    0 14px 36px rgba(2, 132, 199, 0.28);
+  filter: brightness(1.08);
+}
+
+/* Biến thể danger rực hơn */
+.btn.danger:hover,
+.btn.danger:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 35%, transparent),
+    0 14px 36px rgba(220, 38, 38, 0.22);
+  filter: brightness(1.06);
+}
+
+/* Tăng khả dụng bàn phím */
+.btn:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Tôn trọng người dùng giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+/* Hint nằm trên thanh bar: gọn hơn, nền trong suốt */
+.hint--bar {
+  margin-right: auto; /* khoảng cách giữa hint và nút Giao diện */
+  background: transparent;
+  border-style: dashed;
+  border-color: color-mix(in oklab, var(--border) 70%, transparent);
+  color: var(--text);
+  opacity: 0.9;
+  padding: 6px 10px;
+  white-space: nowrap; /* tránh xuống dòng */
+}
+
+@media (max-width: 900px) {
+  .hint--bar {
+    display: none;
+  }
+}
+
+[data-theme="light"] .btn {
+  background: #fff;
+  border-color: #e5e7eb;
+  color: var(--text);
+}
+[data-theme="light"] .btn.danger {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.1),
+    rgba(220, 38, 38, 0.05)
+  );
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #7f1d1d;
+}
+[data-theme="light"] .hint {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+/* Tiêu đề luôn to – đậm – nổi bật */
+.title {
+  font-weight: 900;
+  font-size: clamp(22px, 2.2vw, 34px);
+  letter-spacing: 0.2px;
+  line-height: 1.15;
+  color: var(--text);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 30px rgba(97, 196, 255, 0.15);
+  filter: drop-shadow(0 6px 24px rgba(97, 196, 255, 0.18));
+}
+
+/* Khi đang chỉnh tiêu đề vẫn giữ cảm giác nổi bật */
+.title-btn.editing {
+  box-shadow: 0 0 0 3px var(--ring), 0 8px 30px rgba(97, 196, 255, 0.25);
+  background: rgba(97, 196, 255, 0.1);
+}
+
+/* Light theme tinh chỉnh nhẹ để không quá gắt */
+[data-theme="light"] .title {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 24px rgba(2, 132, 199, 0.16);
+}
+
+/* ===== TABLE ===== */
+.table-wrap {
+  overflow: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 20, 40, 0.92),
+    rgba(12, 20, 36, 0.86)
+  );
+  backdrop-filter: blur(6px);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  color: var(--text);
+}
+th,
+td {
+  border-right: 1.5px solid var(--grid);
+  border-bottom: 1.5px solid var(--grid);
+  padding: 10px 12px;
+  text-align: center;
+}
+th,
+td {
+  white-space: normal; /* CHO PHÉP XUỐNG DÒNG */
+  overflow-wrap: anywhere; /* bẻ từ nếu cần */
+  word-break: break-word; /* bẻ chữ dài */
+}
+tr td:first-child,
+tr th:first-child {
+  border-left: 1.5px solid var(--grid);
+}
+tbody tr:last-child td {
+  border-bottom: 1.5px solid var(--grid);
+}
+tbody tr:nth-child(odd):not(.section-row) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+td[contenteditable="true"] {
+  background: rgba(255, 255, 255, 0.02);
+  outline: none;
+}
+td[contenteditable="true"]:focus {
+  outline: 3px solid var(--ring);
+  background: rgba(97, 196, 255, 0.1);
+}
+td[contenteditable][data-ph]:empty:before {
+  content: attr(data-ph);
+  opacity: 0.45;
+  font-style: italic;
+  pointer-events: none;
+}
+td[contenteditable].is-active {
+  outline: 3px solid var(--ring) !important;
+  background: rgba(97, 196, 255, 0.1) !important;
+}
+
+.section-row td {
+  background: linear-gradient(
+    90deg,
+    rgba(97, 196, 255, 0.08),
+    rgba(131, 224, 163, 0.08)
+  );
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-align: center;
+  padding: 10px;
+}
+
+[data-theme="light"] thead th {
+  background: linear-gradient(180deg, #f3f4f6, #e5e7eb);
+  color: #111827;
+}
+[data-theme="light"] .section-row td {
+  background: linear-gradient(90deg, #e6f3ff, #e9fbea);
+  color: #0f172a;
+}
+[data-theme="light"] tbody tr:nth-child(odd):not(.section-row) td {
+  background: #fbfdff;
+}
+[data-theme="light"] td[contenteditable="true"] {
+  background: #ffffff;
+}
+[data-theme="light"] td[contenteditable="true"]:focus {
+  background: #eef6ff;
+}
+[data-theme="light"] th,
+[data-theme="light"] td {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: #111827;
+}
+
+/* ===== FOOTER ===== */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.status {
+  font-size: 12px;
+  opacity: 0.85;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  body {
+    padding: 14px;
+  }
+  table {
+    min-width: 760px;
+  }
+  .title {
+    font-size: 16px;
+  }
+}
+
+/* ==== PRINT — Letter landscape, sát mép + fit chiều cao ==== */
+:root {
+  /* Tham số in có thể tinh chỉnh nếu cần */
+  --print-margin-mm: 6; /* lề mỏng để không bị cắt (gần sát mép) */
+  --head-h: 42pt; /* ước lượng chiều cao thead */
+  --section-h: 22pt; /* chiều cao hàng "Buổi sáng/chiều" */
+  --title-space: 28pt; /* khoảng cho tiêu đề in */
+  --body-rows: 10; /* sẽ được JS ghi đè trước khi in */
+  --section-rows: 2; /* luôn có 2 hàng section */
+}
+
+@media print {
+  @page {
+    size: Letter landscape;
+    /* Một số trình duyệt không nhận var() trong @page → ghi giá trị tĩnh */
+    margin: 6mm; /* ~ gần sát mép, an toàn chống cắt */
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+
+  /* Ẩn mọi thành phần ngoài tiêu đề và bảng */
+  .bar,
+  .controls,
+  .status,
+  .logo,
+  .hint,
+  .actions,
+  footer,
+  #addRowPmBtn,
+  #delRowPmBtn {
+    display: none !important;
+  }
+
+  /* Tiêu đề in */
+  #printTitle {
+    display: block !important;
+    font-weight: 700;
+    font-size: 22pt;
+    text-align: center;
+    margin: 0 0 6pt;
+  }
+
+  /* Giữ bảng full width */
+  .table-wrap {
+    overflow: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  table {
+    width: 100% !important;
+    height: 100vh !important; /* ép tràn hết chiều cao trang in */
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    background: #fff !important;
+    border: 1.5pt solid #000 !important;
+    font-size: 18px !important; /* cỡ chữ khi in */
+    line-height: 1.3 !important;
+  }
+
+  thead th {
+    padding: 8pt 6pt !important;
+  }
+  tbody td,
+  tbody th {
+    padding: 6pt 6pt !important;
+  }
+
+  /* Dàn đều CHIỀU CAO các hàng dữ liệu để luôn fill đủ 1 trang */
+  thead {
+    height: var(--head-h);
+  }
+  .section-row td {
+    height: var(--section-h) !important;
+  }
+  tbody tr:not(.section-row) {
+    /* Trừ đi: thead + 2 hàng section + khoảng tiêu đề; chia đều cho số hàng dữ liệu */
+    height: calc(
+      (
+          100vh - var(--head-h) - var(--section-rows) * var(--section-h) -
+            var(--title-space)
+        ) / var(--body-rows)
+    );
+  }
+
+  .app {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .bar,
+  .controls,
+  .status,
+  .logo,
+  .hint,
+  .actions,
+  #addRowPmBtn,
+  #delRowPmBtn {
+    display: none !important;
+  }
+
+  .table-wrap {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    background: #fff !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    border: 1.5pt solid #000 !important;
+    page-break-inside: avoid !important;
+  }
+
+  thead,
+  tbody {
+    page-break-inside: avoid !important;
+  }
+
+  thead th {
+    background: transparent !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    border: 1.2pt solid #000 !important;
+    padding: 6pt 8pt !important;
+    font-size: 18px !important;
+  }
+
+  th,
+  td {
+    border: 1.2pt solid #000 !important;
+    color: #000 !important;
+    background: transparent !important;
+    padding: 6pt 8pt !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    hyphens: none !important;
+    font-size: 18px !important;
+  }
+
+  th:first-child,
+  td:first-child {
+    white-space: nowrap !important;
+    width: 8% !important;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    white-space: nowrap !important;
+    width: 12% !important;
+  }
+
+  th:nth-child(n + 3),
+  td:nth-child(n + 3) {
+    width: auto !important;
+  }
+
+  tbody tr[data-section] {
+    height: var(--print-row-h) !important;
+  }
+
+  tbody tr[data-section] > * {
+    height: var(--print-row-h) !important;
+    min-height: var(--print-row-h) !important;
+    line-height: 1.25 !important;
+  }
+
+  .section-row td {
+    background: transparent !important;
+    color: #000 !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 6pt 8pt !important;
+    font-size: 18px !important;
+  }
+
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  td[data-ph]::before {
+    content: none !important;
+  }
+}
+
+:root {
+  --print-row-h: auto;
+  --print-scale-y: 1;
+  --print-scale-x: 1;
+}
+
+/* Khi gõ tiêu đề: giữ space nếu cần */
+#titleText[contenteditable="true"] {
+  white-space: pre-wrap;
+  caret-color: currentColor;
+}
+
+/* tiêu đề khi gõ: giữ nguyên space */
+#titleText[contenteditable="true"] {
+  white-space: pre-wrap; /* giữ space + vẫn có thể wrap khi dài */
+  caret-color: currentColor;
+}
+/* brand được phép co, tránh đè hint/actions */
+.brand {
+  flex: 1 1 auto;
+  min-width: 0;
+} /* thanh bar của bạn là flex rồi */
+.hint--bar,
+.actions {
+  flex: 0 0 auto;
+} /* không co hai khối này */
+
+/* nút tiêu đề là vùng co/giãn */
+.title-btn {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* Hiện placeholder (dấu chấm/”Nhập tiêu đề…”) khi nút có data-ph */
+.title-btn[data-ph]::after {
+  content: attr(data-ph);
+  opacity: 0.6;
+  font-style: italic;
+  pointer-events: none; /* vẫn bấm được nút */
+  white-space: nowrap;
+}
+
+/* có chữ hoặc đang edit thì tắt placeholder */
+.title-btn.has-text::after,
+.title-btn.editing::after {
+  content: none;
+}
+
+/* nội dung tiêu đề: 1 dòng + cắt dư */
+#titleText {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* ===== MODAL — VIP/PRO ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.is-open {
+  display: flex;
+}
+body.modal-open {
+  overflow: hidden;
+} /* khóa cuộn nền */
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      1200px 800px at 20% 10%,
+      rgba(97, 196, 255, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      1200px 800px at 80% 90%,
+      rgba(131, 224, 163, 0.16),
+      transparent 60%
+    ),
+    rgba(6, 10, 22, 0.55);
+  backdrop-filter: blur(4px);
+  animation: overlayIn 0.28s ease-out both;
+}
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal__panel {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  width: calc(100% - 40px);
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    ),
+    linear-gradient(180deg, rgba(13, 20, 40, 0.9), rgba(13, 20, 36, 0.86));
+  border: 1px solid color-mix(in oklab, var(--ring) 35%, var(--border));
+  box-shadow: 0 18px 60px rgba(8, 12, 24, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(8px) scale(0.98);
+  opacity: 0;
+  animation: panelIn 0.34s cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+}
+@keyframes panelIn {
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.modal__title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: clamp(22px, 2.2vw, 28px);
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 10px 30px rgba(97, 196, 255, 0.22));
+}
+.modal__close {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 90%, transparent);
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.modal__close:hover {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 35%, transparent);
+}
+
+.modal__desc {
+  margin: 0 0 16px 0;
+  opacity: 0.9;
+}
+
+.modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+}
+
+/* —— Nút kính mờ phát sáng —— */
+.btn--glass,
+.btn--danger-glass,
+.btn--ghost {
+  position: relative;
+  isolation: isolate;
+  border-radius: 16px;
+  height: auto;
+  min-height: 54px;
+  padding: 14px 18px;
+  font-weight: 800;
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in oklab, var(--ring) 35%, var(--border));
+}
+.btn--glass {
+  background: linear-gradient(
+    135deg,
+    rgba(97, 196, 255, 0.16),
+    rgba(131, 224, 163, 0.12)
+  );
+}
+.btn--danger-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.16),
+    rgba(255, 107, 107, 0.06)
+  );
+  border-color: color-mix(in oklab, var(--danger) 60%, var(--border));
+}
+.btn--ghost {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+}
+
+.btn__icon {
+  font-size: 18px;
+}
+.btn__text {
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+
+/* quầng sáng */
+.btn__glow {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 18px;
+  background: radial-gradient(
+      120px 60px at 10% 20%,
+      rgba(97, 196, 255, 0.35),
+      transparent 60%
+    ),
+    radial-gradient(
+      120px 60px at 90% 80%,
+      rgba(131, 224, 163, 0.35),
+      transparent 60%
+    );
+  opacity: 0;
+  transition: opacity 0.22s ease, filter 0.22s ease;
+  filter: blur(10px);
+}
+.btn--danger-glass .btn__glow {
+  background: radial-gradient(
+      120px 60px at 15% 20%,
+      rgba(255, 107, 107, 0.45),
+      transparent 60%
+    ),
+    radial-gradient(
+      120px 60px at 85% 80%,
+      rgba(255, 107, 107, 0.28),
+      transparent 60%
+    );
+}
+.btn--glass:hover .btn__glow,
+.btn--danger-glass:hover .btn__glow {
+  opacity: 1;
+}
+
+/* hover/focus nâng cấp */
+.btn--glass:hover,
+.btn--danger-glass:hover,
+.btn--ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 35%, transparent),
+    0 16px 44px rgba(97, 196, 255, 0.18);
+}
+.btn--danger-glass:hover {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--danger) 45%, transparent),
+    0 16px 44px rgba(220, 38, 38, 0.22);
+}
+
+/* responsive */
+@media (max-width: 720px) {
+  .modal__actions {
+    grid-template-columns: 1fr;
+  }
+}
+/* ===== MODAL kiểu ALERT: nền đen toàn trang ===== */
+body.modal-open {
+  overflow: hidden;
+} /* khoá cuộn nền khi mở */
+
+.modal--alert .modal__overlay {
+  background: rgba(0, 0, 0, 0.78) !important; /* nền đen mờ mạnh */
+  backdrop-filter: none !important; /* bỏ blur để “đen đặc” */
+}
+
+.modal--alert .modal__panel {
+  transform: scale(0.96);
+  opacity: 0;
+  animation: modalPop 0.22s ease-out forwards; /* pop mượt */
+}
+
+@keyframes modalPop {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* ===== MODAL kiểu ALERT: nền đen toàn trang ===== */
+body.modal-open {
+  overflow: hidden;
+} /* khoá cuộn nền khi mở */
+
+.modal--alert .modal__overlay {
+  background: rgba(0, 0, 0, 0.78) !important; /* nền đen mờ mạnh */
+  backdrop-filter: none !important; /* bỏ blur để “đen đặc” */
+}
+
+.modal--alert .modal__panel {
+  transform: scale(0.96);
+  opacity: 0;
+  animation: modalPop 0.22s ease-out forwards; /* pop mượt */
+}
+
+@keyframes modalPop {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* FOOTER */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap; /* cho phép xuống dòng */
+  gap: 12px;
+  align-items: center;
+}
+.hint-row {
+  flex: 0 0 100%; /* chiếm trọn chiều ngang -> nhảy xuống dòng */
+  margin-top: 8px;
+  text-align: center;
+}
+/* ===== Import Modal ===== */
+.imod-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 1100;
+}
+
+.imod-card {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(680px, 92vw);
+  background: #0f172a;
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  padding: 20px 20px 24px;
+  z-index: 1110;
+}
+
+.imod-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.imod-header h3 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #bfe0ff;
+  margin: 0;
+}
+.imod-sub {
+  opacity: 0.9;
+  margin: 8px 0 18px;
+}
+
+.imod-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  font-size: 20px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.imod-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.imod-close:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* Actions: auto-fit để responsive đẹp */
+.imod-actions {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 720px) {
+  .imod-actions {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* ----- Base button (không trùng lặp) ----- */
+.imod-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b1220;
+  color: #eaf2ff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.06s ease, box-shadow 0.12s ease, background 0.12s ease,
+    border-color 0.12s ease;
+}
+.imod-btn:active {
+  transform: translateY(1px);
+}
+.imod-btn:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.imod-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+.imod-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+.imod-text strong {
+  font-weight: 800;
+  font-size: 15px;
+}
+.imod-text small {
+  opacity: 0.85;
+  font-size: 12px;
+}
+
+/* ----- Variants: brand colors ----- */
+.imod-btn--pdf {
+  background: #0b1a2a;
+  border-color: rgba(250, 15, 0, 0.25);
+}
+.imod-btn--pdf:hover {
+  box-shadow: 0 10px 26px rgba(250, 15, 0, 0.35);
+  border-color: rgba(250, 15, 0, 0.45);
+}
+
+.imod-btn--word {
+  background: #0b1730;
+  border-color: rgba(24, 90, 189, 0.25);
+}
+.imod-btn--word:hover {
+  box-shadow: 0 10px 26px rgba(24, 90, 189, 0.35);
+  border-color: rgba(24, 90, 189, 0.45);
+}
+
+.imod-btn--excel {
+  background: #0b1f18;
+  border-color: rgba(16, 124, 65, 0.25);
+}
+.imod-btn--excel:hover {
+  box-shadow: 0 10px 26px rgba(16, 124, 65, 0.35);
+  border-color: rgba(16, 124, 65, 0.45);
+}
+
+/* In ấn: ẩn modal */
+@media print {
+  #imod-overlay,
+  #imod-card {
+    display: none !important;
+  }
+}

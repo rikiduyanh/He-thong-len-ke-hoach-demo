@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thời khóa biểu — chuyên nghiệp</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app" aria-label="Ứng dụng thời khóa biểu">
+      <header class="bar" role="banner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">📚</div>
+
+          <!-- NÚT TIÊU ĐỀ: bấm để gõ trực tiếp -->
+          <button
+            id="titleBtn"
+            class="title title-btn"
+            aria-label="Đổi tiêu đề"
+          >
+            <span id="titleText"></span>
+          </button>
+        </div>
+        <div class="actions">
+          <span class="hint hint--bar">
+            Gõ <b><u>Shift/ Cmd </u></b> + <b><u>Delete</u></b> xoá sạch tiêu đề
+          </span>
+          <button
+            id="themeBtn"
+            class="btn"
+            title="Chuyển giao diện sáng/tối"
+            aria-pressed="false"
+          >
+            🌓 Giao diện
+          </button>
+          <button id="printBtn" class="btn" title="In hoặc lưu PDF (A4 ngang)">
+            🖨️ In / PDF
+          </button>
+        </div>
+      </header>
+
+      <nav class="controls" aria-label="Điều khiển">
+        <div class="button-group-center">
+          <button
+            id="createBtn"
+            style="font-family: Georgia, 'Times New Roman', Times, serif"
+            class="btn primary"
+          >
+            🧩 Tạo bảng
+          </button>
+          <button id="addRowAmBtn" class="btn">➕ Hàng sáng</button>
+          <button id="delRowAmBtn" class="btn danger">➖ Xoá hàng sáng</button>
+          <button id="undoBtn" class="btn" title="Hoàn tác (Ctrl+Z)">
+            ↩️ Hoàn tác
+          </button>
+          <button id="redoBtn" class="btn" title="Làm lại (Ctrl+Shift+Z)">
+            ↪️ Trở lại
+          </button>
+          <button
+            id="restoreBtn"
+            class="btn"
+            title="Khôi phục từ bản lưu tự động"
+          >
+            🔄 Lịch sử thao tác
+          </button>
+          <button
+            id="clearBtn"
+            class="btn danger"
+            title="Xoá hết dữ liệu trong bảng hiện tại"
+          >
+            Xoá sạch dữ liệu
+          </button>
+
+          <!-- INPUT ẨN & NÚT IMPORT -->
+          <input type="file" id="importFile" style="display: none" />
+          <button id="importBtn" class="btn">📂 Import file</button>
+        </div>
+
+        <select id="vaultSelect" class="btn">
+          <option value="">— Chọn bảng đã lưu —</option>
+        </select>
+        <button id="openVaultBtn" class="btn">📂 Mở</button>
+        <button id="deleteVaultBtn" class="btn danger">🗑️ Xoá lưu</button>
+
+        <!-- Xuất -->
+        <button id="exportDocBtn" class="btn" title="Xuất Word (giữ kẻ bảng)">
+          <img
+            src="word-icon-24.png"
+            alt="Word"
+            style="
+              height: 20px;
+              width: 20px;
+              vertical-align: middle;
+              margin-right: 6px;
+            "
+          />
+          Xuất Word
+        </button>
+        <button
+          id="exportXlsBtn"
+          class="btn"
+          title="Xuất Excel (.xls, giữ kẻ ô)"
+        >
+          <img
+            src="excel-icon-24.png"
+            alt="Excel"
+            style="
+              height: 20px;
+              width: 20px;
+              vertical-align: middle;
+              margin-right: 6px;
+            "
+          />
+          Xuất Excel
+        </button>
+
+        <button
+          id="purgeHistoryBtn"
+          class="btn danger"
+          aria-label="Xoá lịch sử"
+        >
+          ⌫ Lịch sử thao tác
+        </button>
+        <span class="hint hint--bar"
+          >Xoá dữ liệu ô (Delete); copy ô (Ctrl + C)</span
+        >
+      </nav>
+
+      <main class="table-wrap" role="main">
+        <table id="tkb" aria-label="Bảng thời khóa biểu">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </main>
+
+      <footer class="foot">
+        <div id="status" class="status" role="status" aria-live="polite">
+          Sẵn sàng ✨
+        </div>
+        <div class="toolbar">
+          <button id="addRowPmBtn" class="btn">➕ Hàng chiều</button>
+          <button id="delRowPmBtn" class="btn danger">➖ Xoá hàng chiều</button>
+        </div>
+
+        <div class="hint-row">
+          <span class="hint hint--bar">
+            Gõ <b><u>Enter</u></b> xuống dòng. Gõ <b><u>Tab</u></b> di chuyển
+            sang phải. Muốn chèn hàng trên, giữ phím <b><u>Shift</u></b> +
+            <b><u>Hàng sáng/chiều</u></b
+            >. Thoát khỏi chế độ chọn ô, bấm nút
+            <b><u>ESC/ nhấn ra bên ngoài bảng </u></b>
+          </span>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Modal tạo bảng (giữ nguyên hệ thống modal sẵn có của bạn) -->
+    <div
+      id="createModal"
+      class="modal modal--alert"
+      aria-hidden="true"
+      role="dialog"
+      aria-labelledby="createModalTitle"
+    >
+      <div class="modal__overlay" data-close></div>
+      <div class="modal__panel" role="document">
+        <div class="modal__header">
+          <h3 id="createModalTitle" class="modal__title">Tạo bảng</h3>
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Đóng"
+            data-close
+          >
+            ✕
+          </button>
+        </div>
+        <p class="modal__desc">Chọn chức năng bạn muốn:</p>
+        <div class="modal__actions">
+          <button id="optRestoreBtn" class="btn btn--glass" autofocus>
+            <span class="btn__icon">🗂️</span
+            ><span class="btn__text">Lấy lại giá trị bảng cũ</span
+            ><span class="btn__glow"></span>
+          </button>
+          <button id="optClearBtn" class="btn btn--danger-glass">
+            <span class="btn__icon">🧹</span
+            ><span class="btn__text">Xoá hết dữ liệu bảng cũ</span
+            ><span class="btn__glow"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== IMPORT MODAL (mới) ===== -->
+    <div id="imod-overlay" class="imod-overlay" hidden></div>
+    <div
+      id="imod-card"
+      class="imod-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="imod-title"
+      hidden
+    >
+      <div class="imod-header">
+        <h3 id="imod-title">Import file</h3>
+        <button id="imod-close" class="imod-close" aria-label="Đóng">×</button>
+      </div>
+      <p class="imod-sub">Chọn định dạng bạn muốn:</p>
+      <div class="imod-actions">
+        <!-- PDF (Adobe) -->
+        <button
+          class="imod-btn imod-btn--pdf"
+          data-kind="pdf"
+          aria-label="Import PDF"
+        >
+          <span class="imod-icon" aria-hidden="true">
+            <!-- Adobe-style ribbon A -->
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="3" fill="#FFFFFF" />
+              <path
+                d="M6.4 17.5c2.3-4.3 4.2-7.7 7-11.8c.2-.3.7-.3.9 0c.4.6.6 1.1.7 1.7c.1.4-.2.8-.6.9c-1.1.2-2 .5-2.8.9c1.5 2.6 3.3 4.7 5.5 6.4c.4.3.4.9-.1 1.1c-.8.4-1.7.7-2.7.8c-.4.1-.8-.2-.9-.6c-.3-1.1-.8-2.2-1.3-3.2c-1.5.6-3.2 1-5 .9c-.4 0-.7.2-.8.6c-.1.7-.2 1.4-.3 2.1c0 .4-.4.7-.8.7H6.4z"
+                fill="#FA0F00"
+              />
+            </svg>
+          </span>
+          <span class="imod-text">
+            <strong>Import PDF</strong>
+            <small>.pdf</small>
+          </span>
+        </button>
+
+        <!-- Word (Microsoft Fluent) -->
+        <button
+          class="imod-btn imod-btn--word"
+          data-kind="word"
+          aria-label="Import Word"
+        >
+          <span class="imod-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="22" height="22" fill="none">
+              <rect x="14" y="6" width="28" height="36" rx="3" fill="#2B579A" />
+              <rect x="6" y="12" width="16" height="24" rx="2" fill="#185ABD" />
+              <path
+                d="M12 18l3.2 12h2.6l2-7.6 2 7.6h2.6L28 18h-2.6l-1.7 7-1.8-7h-2.2l-1.8 7L16.2 18H12z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </span>
+          <span class="imod-text">
+            <strong>Import Word</strong>
+            <small>.doc/.docx</small>
+          </span>
+        </button>
+
+        <!-- Excel (Microsoft Fluent) -->
+        <button
+          class="imod-btn imod-btn--excel"
+          data-kind="excel"
+          aria-label="Import Excel"
+        >
+          <span class="imod-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="22" height="22" fill="none">
+              <rect x="14" y="6" width="28" height="36" rx="3" fill="#107C41" />
+              <rect x="6" y="12" width="16" height="24" rx="2" fill="#0E7A3E" />
+              <path
+                d="M12.5 19l4.1 5.9L12.5 31h3l2.6-3.9L20.7 31h3l-4-6 4-6h-3l-2.6 3.9L15.6 19h-3.1z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </span>
+          <span class="imod-text">
+            <strong>Import Excel</strong>
+            <small>.xls/.xlsx/.csv</small>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Thư viện cần thiết -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Đưa Mammoth TRƯỚC app.js để chắc chắn sẵn sàng khi gọi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.5.1/mammoth.browser.min.js"></script>
+    <script>
+      window.API_URL =
+        "https://script.google.com/macros/s/AKfycbxwTfNX39wC26fw5imA8v6RXiF6RsZtGRxx3TZS5fv0pJwsQpOQQEoJZYxRTd9G0yGxkA/exec";
+      window.API_SECRET = "chuoi-bi-mat_cua_ban";
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>
